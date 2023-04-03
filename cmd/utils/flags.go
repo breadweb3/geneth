@@ -1937,6 +1937,10 @@ func MakeChain(ctx *cli.Context, stack *node.Node, readOnly bool) (chain *core.B
 	if err != nil {
 		Fatalf("Can't create BlockChain: %v", err)
 	}
+	// set state fn if consensus engine is ribose.
+	if riboseEngine, ok := engine.(*ribose.Ribose); ok {
+		riboseEngine.SetStateFn(chain.StateAt)
+	}
 	return chain, chainDb
 }
 
